@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+
+module DashcodeConverter
+  
+  LIB_DIR= File.expand_path(File.join(File.dirname(__FILE__), "..", "lib"))
+  VENDOR_DIR= File.expand_path(File.join(File.dirname(__FILE__), "..", "vendor"))
+  APP_NAME= File.basename($0)
+
+  $:.unshift(LIB_DIR)
+  
+  require 'dashcode-converter'
+
+  project_files= []
+
+  ARGV.each { |arg|
+    project_files += Dir.glob(File.join(arg, "*.dcproj")) if File.directory?(arg)
+    project_files << arg if File.fnmatch("*.dcproj", arg)
+  }
+
+  project_files.each { |project_path|
+    project= Project.new(project_path)
+    project.convert
+  }
+
+end
+
