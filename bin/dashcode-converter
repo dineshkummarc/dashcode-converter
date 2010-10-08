@@ -8,6 +8,18 @@ module DashcodeConverter
   APP_NAME= File.basename($0)
 
   $:.unshift(LIB_DIR)
+
+  options= {
+    :namespace=>nil
+  }
+  
+  optparser= OptionParser.new do |opts|
+    opts.on('--namespace NAMESPACE', "Define the namespace to contain classes and functions") do |namespace|
+      options[:namespace]= namespace
+    end
+  end
+  
+  optparser.parse!
   
   require 'dashcode-converter'
 
@@ -20,6 +32,7 @@ module DashcodeConverter
 
   project_files.each { |project_path|
     project= Project.new(project_path)
+    project.namespace= options[:namespace]
     project.convert
   }
 

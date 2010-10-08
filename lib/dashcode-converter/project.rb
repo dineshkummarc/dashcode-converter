@@ -4,10 +4,13 @@ module DashcodeConverter
 
   
   class Project
-
+    
+    attr_accessor :namespace
+    
     def initialize(project_bundle)
       @project_bundle= File.expand_path(project_bundle)
       @name= File.basename(@project_bundle, ".*")
+      @namespace= @name
       @output_folder= File.expand_path(File.join("out", "#{@name}.jsnib"))
       @parts_spec_path= File.join(@project_bundle, "project", "safari", "Parts", "setup.js")
       @datasources_spec_path= File.join(@project_bundle, "project", "Parts", "datasources.js")
@@ -47,7 +50,7 @@ module DashcodeConverter
 
     def controller
       return @controller if @controller
-      @controller= Controller.new(@name)
+      @controller= Controller.new(@name, @namespace)
     end
     
     def nib
