@@ -1,39 +1,10 @@
 module DashcodeConverter
 
   CSS_IMAGE_URL_REGEX= /url\("?(.*\.(jpg|png|gif))"?\)/
+
   
   class Project
 
-    JSON_PARAMS= {
-      :indent=> "  ",
-      :object_nl=> "\n",
-      :array_nl=> "\n",
-      :space=> " "
-    }
-    
-    CLASSNAME_LOOKUP= {
-      "Text" => "View",
-      "PushButton" => "Button",
-      "List" => "CollectionView"
-    }
-    
-    NIB_TEMPLATE= ERB.new %q{
-      NIB("<%=@name%>", {
-      <% (nib_items["views"]||{}).each do |view_name, decl| %>
-        "<%=view_name%>": VIEW({
-        <% decl.each do |id, part| %>
-            "#<%=id%>": <%=nib_item_spec(part)%>,
-        <% end %>
-        }),
-      <% end %>
-      // Everything else
-      <% nib_items.each do |item_name, decl| %>
-        <% next if 'views'==item_name %>
-        "<%=item_name%>": <%=nib_item_spec(decl)%>,
-      <% end %>
-      });
-    }
-          
     def initialize(project_bundle)
       @project_bundle= File.expand_path(project_bundle)
       @name= File.basename(@project_bundle, ".*")
@@ -43,7 +14,6 @@ module DashcodeConverter
       @css_path= File.join(@project_bundle, "project", "safari", "main.css")
       @markup_path= File.join(@project_bundle, "project", "index.html")
       @images_folder= File.join(@output_folder, "images")
-      @owner_methods= []
     end
 
     def path_relative_to_folder(path, folder)
@@ -68,43 +38,6 @@ module DashcodeConverter
       path_relative_to_folder(path, @output_folder)
     end
     
-    def adjust_declaration_for_CollectionView(decl)
-      decl.delete("useDataSource")
-      decl.delete("sampleRows")
-      decl.delete("labelElementId")
-      decl.delete("listStyle")
-      decl.delete("dataArray")
-      decl
-    end
-    
-    def nib_item_spec(decl)
-      spec= {}
-      decl.each { |key, value|
-        next if ["text", "view", "Class", "propertyValues"].include?(key)
-        
-        # translate Dashcode's onclick parameter into a target/action pair
-        if "onclick"==key
-          key="action"
-          spec["target"]= "owner"
-          @owner_methods << value
-        end
-        
-        spec[key]= value
-      }
-      spec.merge!(decl['propertyValues']) if decl['propertyValues']
-      
-      parts= (decl['view']||decl['Class']).split(".")
-      parts[0]= "coherent" if parts[0]=="DC"
-      parts[1]= CLASSNAME_LOOKUP[parts[1]] if CLASSNAME_LOOKUP.include?(parts[1])
-
-      if self.respond_to?("adjust_declaration_for_#{parts[1]}")
-        spec= self.send("adjust_declaration_for_#{parts[1]}", spec)
-      end
-      values= spec.to_json(JSON_PARAMS)
-      values= values.split("\n").join("\n                ")
-      "#{parts.join(".")}(#{values})"
-    end
-    
     def doc
       return @doc if @doc
       
@@ -112,31 +45,18 @@ module DashcodeConverter
       @doc= Nokogiri::HTML(html)
     end
 
-    def nib_items_from_path(path)
-      in_json= false
-      json= "{\n"
-      text= File.read(path)
-      text.each { |line|
-        if in_json
-          json << line
-          next
-        end
-
-        next unless (line =~ /dashcodePartSpecs/ || line =~ /dashcodeDataSources/)
-        in_json= true
-      }
-      JSON.parse(json.gsub(/;$/,''))
+    def controller
+      return @controller if @controller
+      @controller= Controller.new(@name)
     end
     
-    def nib_items
-      return @nib_items if @nib_items
+    def nib
+      return @nib if @nib
       
-      @nib_items= {
-        'views' => {
-          @name => nib_items_from_path(@parts_spec_path)
-        }
-      }
-      @nib_items.merge!(nib_items_from_path(@datasources_spec_path))
+      @nib= Nib::Nib.new(@name, controller)
+      @nib.add_view_from_path(@parts_spec_path)
+      @nib.add_datasources_from_path(@datasources_spec_path)
+      @nib
     end
     
     def css
@@ -154,10 +74,6 @@ module DashcodeConverter
         end
       }
       text
-    end
-    
-    def nib
-      NIB_TEMPLATE.result binding
     end
     
     def fixup_html
@@ -184,14 +100,11 @@ module DashcodeConverter
         node["src"]= relative_path(new_image_file)
       }
       
-      nib_items.each { |id, definition|
-        html= doc.css("##{id}")[0]
-        if definition['view']=='DC.PushButton'
-          html.name='button'
-        end
-        if definition.include?('text')
-          html.content= definition['text']
-        end
+      nib.views.each { |view|
+        view.items.each { |item|
+          html= doc.css(item.name)[0]
+          item.fixup_html(html)
+        }
       }
     end
     
@@ -202,8 +115,11 @@ module DashcodeConverter
       FileUtils.mkdir_p(@images_folder)
       
       Dir.chdir(@output_folder) do
+        File.open("#{@name.capitalize}Controller.js", "w") { |controller_file|
+          controller_file << controller.declaration
+        }
         File.open("#{@name}.js", "w") { |nib_file|
-          nib_file << nib
+          nib_file << nib.declaration
         }
         File.open("#{@name}.css", "w") { |css_file|
           css_file << css

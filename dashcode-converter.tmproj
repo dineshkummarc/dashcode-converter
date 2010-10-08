@@ -13,6 +13,8 @@
 			<string>dashcode-converter</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
+			<key>selected</key>
+			<true/>
 			<key>sourceDirectory</key>
 			<string></string>
 		</dict>
@@ -21,19 +23,47 @@
 	<integer>270</integer>
 	<key>metaData</key>
 	<dict>
+		<key>README.markdown</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>Rakefile</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>47</integer>
+				<key>line</key>
+				<integer>13</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>lib/dashcode-converter/project.rb</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>8</integer>
+				<integer>47</integer>
 				<key>line</key>
-				<integer>82</integer>
+				<integer>31</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>48</integer>
+			<integer>5</integer>
 		</dict>
 		<key>out/dash2coherent.jsnib/dash2coherent.css</key>
 		<dict>
@@ -68,38 +98,22 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>25</integer>
+				<integer>12</integer>
 				<key>line</key>
-				<integer>16</integer>
+				<integer>90</integer>
 			</dict>
-			<key>columnSelection</key>
-			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>19</integer>
-				<key>line</key>
-				<integer>16</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>25</integer>
-				<key>line</key>
-				<integer>16</integer>
-			</dict>
+			<integer>47</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
+		<string>Rakefile</string>
 		<string>lib/dashcode-converter/project.rb</string>
-		<string>out/dash2coherent.jsnib/dash2coherent.html</string>
-		<string>out/dash2coherent.jsnib/dash2coherent.css</string>
 		<string>out/dash2coherent.jsnib/dash2coherent.js</string>
+		<string>README.markdown</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
