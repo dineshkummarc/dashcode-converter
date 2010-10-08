@@ -43,8 +43,8 @@ module DashcodeConverter
           parts[1]= CLASSNAME_LOOKUP[parts[1]] if CLASSNAME_LOOKUP.include?(parts[1])
         end
       
-        if self.respond_to?("adjust_nib_item_for_#{parts[1]}")
-          nib_item= self.send("adjust_nib_item_for_#{parts[1]}", nib_item)
+        if self.respond_to?("adjust_declaration_for_#{parts[1]}")
+          nib_item= self.send("adjust_declaration_for_#{parts[1]}", nib_item)
         end
         @classname= parts.join(".")
         values= nib_item.to_json(JSON_PARAMS)
