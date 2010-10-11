@@ -1,17 +1,17 @@
 module DashcodeConverter
 
   CSS_IMAGE_URL_REGEX= /url\("?(.*\.(jpg|png|gif))"?\)/
-
+  BUNDLE_EXTENSION= "jsnib"
   
   class Project
     
     attr_accessor :namespace
     
-    def initialize(project_bundle)
+    def initialize(project_bundle, output_folder)
       @project_bundle= File.expand_path(project_bundle)
       @name= File.basename(@project_bundle, ".*")
       @namespace= @name
-      @output_folder= File.expand_path(File.join("out", "#{@name}.jsnib"))
+      @output_folder= File.expand_path(File.join(output_folder, "#{@name}.#{BUNDLE_EXTENSION}"))
       @parts_spec_path= File.join(@project_bundle, "project", "safari", "Parts", "setup.js")
       @datasources_spec_path= File.join(@project_bundle, "project", "Parts", "datasources.js")
       @css_path= File.join(@project_bundle, "project", "safari", "main.css")
@@ -104,7 +104,10 @@ module DashcodeConverter
       }
       
       nib.views.each { |view|
-        view.items.each { |item|
+        # Use a copy of the view's items, because the iterator isn't stable if
+        # items are removed while iterating.
+        items= view.items.clone
+        items.each { |item|
           html= doc.css(item.name)[0]
           item.fixup_html(html)
         }

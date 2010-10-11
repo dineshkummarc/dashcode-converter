@@ -31,10 +31,14 @@ module DashcodeConverter
         @views= []
       end
       
+      def add_view(view)
+        items[view.name]= view
+        views << view
+      end
+      
       def add_view_from_path(path, name=@name)
         view= View.new(name, parse(path), self)
-        items[name]= view
-        views << view
+        add_view(view)
       end
       
       def add_datasources_from_path(path)

@@ -10,12 +10,17 @@ module DashcodeConverter
   $:.unshift(LIB_DIR)
 
   options= {
-    :namespace=>nil
+    :namespace=>nil,
+    :output_folder=>File.expand_path('out')
   }
   
   optparser= OptionParser.new do |opts|
-    opts.on('--namespace NAMESPACE', "Define the namespace to contain classes and functions") do |namespace|
+    opts.banner= "Usage: #{APP_NAME} [options] PROJECT"
+    opts.on('--namespace NAMESPACE', "Define the namespace to contain classes and functions.") do |namespace|
       options[:namespace]= namespace
+    end
+    opts.on('--dest FOLDER', "Specifies where should the output JSIB folder be located.") do |output_folder|
+      options[:output_folder]= output_folder
     end
   end
   
@@ -30,8 +35,13 @@ module DashcodeConverter
     project_files << arg if File.fnmatch("*.dcproj", arg)
   }
 
+  if project_files.empty?
+    puts optparser
+    exit 1
+  end
+  
   project_files.each { |project_path|
-    project= Project.new(project_path)
+    project= Project.new(project_path, options[:output_folder])
     project.namespace= options[:namespace]
     project.convert
   }
