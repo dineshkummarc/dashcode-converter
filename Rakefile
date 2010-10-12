@@ -39,6 +39,8 @@ end
 #   end
 # end
 
+task :push => "gemcutter:release"
+
 task :test => :check_dependencies
 
 task :default => :build

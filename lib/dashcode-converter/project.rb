@@ -17,6 +17,7 @@ module DashcodeConverter
       @css_path= File.join(@project_bundle, "project", "safari", "main.css")
       @markup_path= File.join(@project_bundle, "project", "index.html")
       @images_folder= File.join(@output_folder, "images")
+      FileUtils.mkdir_p(@output_folder)
     end
 
     def path_relative_to_folder(path, folder)
@@ -72,6 +73,7 @@ module DashcodeConverter
           match
         else
           new_image_file= File.join(@images_folder, File.basename(image_file))
+          FileUtils.mkdir_p(File.dirname(new_image_file))
           FileUtils.cp image_file, new_image_file
           "url(\"#{relative_path(new_image_file)}\")"
         end
@@ -99,6 +101,7 @@ module DashcodeConverter
       content.css("[src]").each { |node|
         image_file= File.join(dirname, node.attribute('src'))
         new_image_file= File.join(@images_folder, File.basename(image_file))
+        FileUtils.mkdir_p(File.dirname(new_image_file))
         FileUtils.cp image_file, new_image_file
         node["src"]= relative_path(new_image_file)
       }

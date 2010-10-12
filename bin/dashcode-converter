@@ -31,6 +31,7 @@ module DashcodeConverter
   project_files= []
 
   ARGV.each { |arg|
+    arg= File.expand_path(arg)
     project_files += Dir.glob(File.join(arg, "*.dcproj")) if File.directory?(arg)
     project_files << arg if File.fnmatch("*.dcproj", arg)
   }
