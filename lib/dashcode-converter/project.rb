@@ -17,6 +17,7 @@ module DashcodeConverter
       @css_path= File.join(@project_bundle, "project", "safari", "main.css")
       @markup_path= File.join(@project_bundle, "project", "index.html")
       @images_folder= File.join(@output_folder, "images")
+      @scripts= Scripts.new(File.join(@project_bundle, "project", "safari"))
       FileUtils.mkdir_p(@output_folder)
     end
 
@@ -51,7 +52,7 @@ module DashcodeConverter
 
     def controller
       return @controller if @controller
-      @controller= Controller.new(@name, @namespace)
+      @controller= Controller.new(@name, @namespace, @scripts)
     end
     
     def nib

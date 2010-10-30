@@ -2,6 +2,7 @@ require 'json'
 require 'nokogiri'
 require 'erb'
 require 'fileutils'
+require 'v8'
 
 module DashcodeConverter
   
@@ -42,4 +43,5 @@ end
 
 require 'dashcode-converter/controller'
 require 'dashcode-converter/nib'
+require 'dashcode-converter/scripts'
 require 'dashcode-converter/project'
