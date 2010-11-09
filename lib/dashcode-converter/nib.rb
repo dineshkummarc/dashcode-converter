@@ -36,15 +36,22 @@ module DashcodeConverter
         views << view
       end
       
+      def add_item(item)
+        items[item.name]= item
+      end
+      
       def add_view_from_path(path, name=@name)
-        view= View.new(name, parse(path), self)
+        view= View.new(name, self)
+        view.parse_spec(parse_parts(path))
         add_view(view)
       end
       
       def add_datasources_from_path(path)
-        datasources= parse(path)
-        datasources.each { |name, datasource|
-          items[name]= NibItem.new(name, datasource, self)
+        datasources= parse_parts(path)
+        datasources.each { |name, spec|
+          datasource= NibItem.new(name, self)
+          datasource.parse_spec(spec)
+          items[name]= datasource
         }
       end
 
@@ -56,7 +63,7 @@ module DashcodeConverter
         @declaration= ERB.new(DECL_TEMPLATE.remove_indent).result binding
       end
       
-      def parse(path)
+      def parse_parts(path)
         in_json= false
         json= "{\n"
         text= File.read(path)

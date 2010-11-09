@@ -12,12 +12,11 @@ module DashcodeConverter
       attr_reader :name, :nib, :items, :items_by_id
       attr_accessor :is_template
       
-      def initialize(name, spec, nib)
+      def initialize(name, nib)
         @name= name
         @nib= nib
         @items= []
         @items_by_id= {}
-        from_spec(spec) if spec
       end
 
       def remove_item(item)
@@ -31,9 +30,10 @@ module DashcodeConverter
         @items << item
       end
       
-      def from_spec(spec)
+      def parse_spec(spec)
         spec.each { |id, part_spec|
-          item= NibItem.new("##{id}", part_spec, nib)
+          item= NibItem.new("##{id}", nib)
+          item.parse_spec(part_spec)
           add_item(item)
         }
       end

@@ -4,13 +4,14 @@ module DashcodeConverter
     class NibItem
 
       attr_reader :name, :nib
-      attr_accessor :view
+      attr_accessor :view, :classname, :spec
        
-      def initialize(name, spec, nib)
+      def initialize(name, nib)
         @name= name
         @nib= nib
         @view= nil
-        @spec= from_spec(spec)
+        base_classname= ""
+        @spec= {}
       end
 
       def declaration
@@ -18,6 +19,10 @@ module DashcodeConverter
         
         values= @spec.to_json(JSON_PARAMS)
         @declaration= "'#{name}': #{@classname}(#{values})"
+      end
+      
+      def base_classname
+        @base_classname ||= @classname.split(".")[-1]
       end
       
       def fixup_html(html)
@@ -29,12 +34,12 @@ module DashcodeConverter
         end
 
         # allow class specific fixups
-        if self.respond_to?("fixup_html_for_#{@fixupname}")
-          self.send("fixup_html_for_#{@fixupname}", html)
+        if self.respond_to?("fixup_html_for_#{base_classname}")
+          self.send("fixup_html_for_#{base_classname}", html)
         end
       end
       
-      def from_spec(spec)
+      def parse_spec(spec)
         nib_item= {}
         spec.each { |key, value|
           next if ["view", "Class", "propertyValues"].include?(key)
@@ -63,15 +68,14 @@ module DashcodeConverter
           parts[0]= "coherent" if parts[0]=="DC"
           parts[1]= CLASSNAME_LOOKUP[parts[1]] if CLASSNAME_LOOKUP.include?(parts[1])
         end
-      
-        @fixupname= parts[-1]
-
-        if self.respond_to?("adjust_declaration_for_#{@fixupname}")
-          nib_item= self.send("adjust_declaration_for_#{@fixupname}", nib_item)
-        end
 
         @classname= parts.join(".")
-        nib_item
+
+        if self.respond_to?("adjust_declaration_for_#{base_classname}")
+          nib_item= self.send("adjust_declaration_for_#{base_classname}", nib_item)
+        end
+
+        @spec= nib_item
       end
       
     end
