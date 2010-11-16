@@ -11,7 +11,8 @@ module DashcodeConverter
     class Nib
 
       DECL_TEMPLATE= <<-EOF
-          /*import coherent*/
+          /*jsl:import coherent*/
+          
           NIB('<%=name%>', {
             
           <%=items_array.join(",\n\n").indent(INDENT)%>,

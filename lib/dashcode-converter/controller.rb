@@ -16,7 +16,7 @@ module DashcodeConverter
     EOF
     
     DECL_TEMPLATE= <<-EOF
-        /*import coherent*/
+        /*jsl:import coherent*/
 
         <%=namespace%>.<%=name%>= Class.create(coherent.ViewController, {
         

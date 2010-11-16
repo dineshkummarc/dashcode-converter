@@ -32,9 +32,10 @@ end
 
 class String
   def remove_indent
-    match= self.match(/(^\s+)/)
-    return self unless match
-    self.gsub(/^#{match[1]}/, '').strip
+    str= sub(/^\n*/, "")
+    match= str.match(/(^\s+)/)
+    return str unless match
+    str.gsub(/^#{match[1]}/, '').strip
   end
   def indent(str)
     self.gsub(/^/, str)

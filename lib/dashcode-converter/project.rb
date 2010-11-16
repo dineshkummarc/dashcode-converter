@@ -5,19 +5,47 @@ module DashcodeConverter
   
   class Project
     
-    attr_accessor :namespace
+    attr_accessor :namespace, :name
+
+    PROJECT_TEMPLATE= <<-EOF
+      name: <%=name%>
+      version: 1.0.0
+      notice: src/NOTICE
+      type: application
+      export: <%=name%>
+      output folder: build
+
+      external:
+        - name: coherent
+          path: ext/coherent
+          repository: https://github.com/jeffwatkins/coherent.git
+
+      include:
+        - coherent
+  
+      source:
+        - src/index.html
+        - src/<%=name%>.jsnib
+    EOF
     
     def initialize(project_bundle, output_folder)
       @project_bundle= File.expand_path(project_bundle)
       @name= File.basename(@project_bundle, ".*")
       @namespace= @name
-      @output_folder= File.expand_path(File.join(output_folder, "#{@name}.#{BUNDLE_EXTENSION}"))
+      @output_folder= File.expand_path(File.join(output_folder, @name))
+      @nib_folder= "#{@name}.#{BUNDLE_EXTENSION}"
+      @nib_output_folder= File.join(@output_folder, "src", @nib_folder)
+      
+      @images_output_folder= File.join(@output_folder, "src", @nib_folder, "images")
+      
       @parts_spec_path= File.join(@project_bundle, "project", "safari", "Parts", "setup.js")
       @datasources_spec_path= File.join(@project_bundle, "project", "Parts", "datasources.js")
       @css_path= File.join(@project_bundle, "project", "safari", "main.css")
       @markup_path= File.join(@project_bundle, "project", "index.html")
-      @images_folder= File.join(@output_folder, "images")
       @scripts= Scripts.new(File.join(@project_bundle, "project", "safari"))
+      
+      @controller_name= "#{@name.capitalize}Controller"
+      
       FileUtils.mkdir_p(@output_folder)
     end
 
@@ -40,7 +68,7 @@ module DashcodeConverter
     end
 
     def relative_path(path)
-      path_relative_to_folder(path, @output_folder)
+      path_relative_to_folder(path, @nib_output_folder)
     end
     
     def doc
@@ -73,7 +101,7 @@ module DashcodeConverter
         if (!File.exists?(image_file))
           match
         else
-          new_image_file= File.join(@images_folder, File.basename(image_file))
+          new_image_file= File.join(@images_output_folder, File.basename(image_file))
           FileUtils.mkdir_p(File.dirname(new_image_file))
           FileUtils.cp image_file, new_image_file
           "url(\"#{relative_path(new_image_file)}\")"
@@ -101,7 +129,7 @@ module DashcodeConverter
       
       content.css("[src]").each { |node|
         image_file= File.join(dirname, node.attribute('src'))
-        new_image_file= File.join(@images_folder, File.basename(image_file))
+        new_image_file= File.join(@images_output_folder, File.basename(image_file))
         FileUtils.mkdir_p(File.dirname(new_image_file))
         FileUtils.cp image_file, new_image_file
         node["src"]= relative_path(new_image_file)
@@ -121,11 +149,46 @@ module DashcodeConverter
     def convert
       fixup_html
       
+      FileUtils.mkdir_p(@nib_output_folder)
       FileUtils.mkdir_p(@output_folder)
-      FileUtils.mkdir_p(@images_folder)
-      
+      FileUtils.mkdir_p(@images_output_folder)
+
       Dir.chdir(@output_folder) do
-        File.open("#{@name.capitalize}Controller.js", "w") { |controller_file|
+        File.open("#{@name}.jsproj", "w") { |project_file|
+          project_file << ERB.new(PROJECT_TEMPLATE.remove_indent).result(binding)
+        }
+      end
+      
+      Dir.chdir(File.join(@output_folder, "src")) do
+        File.open("index.html", "w") { |html|
+          html <<%{
+            <!DOCTYPE HTML>
+            <html>
+              <head>
+                <link rel="stylesheet" href="#{@name}.css" type="text/css" media="screen" charset="utf-8">
+                <script src="#{@name}.js" type="text/javascript" charset="utf-8"></script>
+              </head>
+  
+              <body>
+              </body>
+              <script type="text/javascript" charset="utf-8">
+                distil.onready(function(){
+    
+                  var controller= new #{@name}.#{@controller_name}({
+                                      nibName: '#{@name}'
+                                    });
+                  controller.view();
+      
+                });
+  
+              </script>
+            </html>
+          }.remove_indent
+        }
+      end
+      
+      Dir.chdir(@nib_output_folder) do
+        File.open("#{@controller_name}.js", "w") { |controller_file|
           controller_file << controller.declaration
         }
         File.open("#{@name}.js", "w") { |nib_file|
@@ -138,6 +201,11 @@ module DashcodeConverter
           html_file << doc.css("body > *:first-child")[0].serialize
         }
       end
+      
+      Dir.chdir(@output_folder) do
+        system 'distil'
+      end
+      
     end
     
   end

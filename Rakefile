@@ -13,6 +13,7 @@ begin
     gem.add_dependency('json', '>= 1.4.3')
     gem.add_dependency('nokogiri', '>=1.4.3.1')
     gem.add_dependency('therubyracer', '>=0.7.5')
+    gem.add_dependency('distil', '>=0.13.1')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
