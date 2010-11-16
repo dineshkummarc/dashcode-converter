@@ -49,6 +49,12 @@ module DashcodeConverter
       if args.include?('event') && body[/\bevent\b/]
         body= "\n    var event= coherent.EventLoop.currentEvent;\n#{body}"
       end
+      # Fixup any crazy DC references
+      body.gsub!(/\bDC\./, "coherent.")
+      # Fixup datasources
+      body.gsub!(/dashcode\.getDataSource\(['"](\w+)['"]\)/) { |match|
+        "this.#{$1}"
+      }
       @methods << "#{doc}\n#{methodname}: function(sender, argument)\n{#{body}}"
     end
 

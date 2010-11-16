@@ -16,9 +16,7 @@ module DashcodeConverter
             
           <%=items_array.join(",\n\n").indent(INDENT)%>,
           
-              'owner': {
-                view: REF('<%=name%>')
-              }
+          <%=_owner_decl.indent(INDENT)%>
           });
       EOF
       
@@ -27,8 +25,10 @@ module DashcodeConverter
       def initialize(name, owner)
         @name= name
         @owner= owner
+        @owner_references= {}
         @items= {}
         @views= []
+        add_owner_reference('view', name)
       end
       
       def add_view(view)
@@ -52,9 +52,14 @@ module DashcodeConverter
           datasource= NibItem.new(name, self)
           datasource.parse_spec(spec)
           items[name]= datasource
+          add_owner_reference(name, name)
         }
       end
-
+      
+      def add_owner_reference(name, reference)
+        @owner_references[name]= JavascriptCode("REF('#{reference}')")
+      end
+      
       def declaration
         return @declaration if @declaration
         
@@ -87,6 +92,10 @@ module DashcodeConverter
           name= "#{basename}#{index}"
         end
         name
+      end
+      
+      def _owner_decl
+        "owner: #{@owner_references.to_json(JSON_PARAMS)}"
       end
       
     end

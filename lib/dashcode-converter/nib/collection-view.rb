@@ -15,7 +15,8 @@ module DashcodeConverter
               "contentBinding" => decl.delete("dataArrayBinding")
             }
           nib.add_item(array_controller)
-
+          nib.add_owner_reference(array_controller_name,array_controller_name)
+          
           decl["contentBinding"]= {
             :keypath => "#{array_controller_name}.arrangedObjects"
           }

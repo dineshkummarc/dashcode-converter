@@ -35,20 +35,6 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>Rakefile</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>47</integer>
-				<key>line</key>
-				<integer>14</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
 		<key>lib/dashcode-converter/controller.rb</key>
 		<dict>
 			<key>caret</key>
@@ -68,14 +54,88 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>65</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>57</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>10</integer>
+				<key>line</key>
+				<integer>65</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>15</integer>
+				<key>line</key>
+				<integer>65</integer>
+			</dict>
+		</dict>
+		<key>lib/dashcode-converter/nib/collection-view.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>40</integer>
+				<integer>21</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
+			<integer>4</integer>
+		</dict>
+		<key>lib/dashcode-converter/nib/nib-item.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>52</integer>
+				<key>line</key>
+				<integer>37</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
 			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>15</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>38</integer>
+				<key>line</key>
+				<integer>37</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>52</integer>
+				<key>line</key>
+				<integer>37</integer>
+			</dict>
+		</dict>
+		<key>lib/dashcode-converter/nib/view.rb</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>35</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>2</integer>
 		</dict>
 		<key>lib/dashcode-converter/project.rb</key>
 		<dict>
@@ -154,14 +214,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>7</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>56</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>37</integer>
+			<integer>51</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
@@ -169,10 +229,11 @@
 		<string>lib/dashcode-converter/scripts.rb</string>
 		<string>lib/dashcode-converter/project.rb</string>
 		<string>lib/dashcode-converter/controller.rb</string>
-		<string>out/dash2coherent.jsnib/Dash2coherentController.js</string>
 		<string>out/dash2coherent.jsnib/dash2coherent.js</string>
-		<string>Rakefile</string>
+		<string>lib/dashcode-converter/nib/view.rb</string>
 		<string>lib/dashcode-converter/nib.rb</string>
+		<string>lib/dashcode-converter/nib/collection-view.rb</string>
+		<string>lib/dashcode-converter/nib/nib-item.rb</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
