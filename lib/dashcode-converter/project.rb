@@ -12,7 +12,7 @@ module DashcodeConverter
       version: 1.0.0
       notice: src/NOTICE
       type: application
-      export: <%=name%>
+      export: <%=namespace%>
       output folder: build
 
       external:
@@ -28,10 +28,12 @@ module DashcodeConverter
         - src/<%=name%>.jsnib
     EOF
     
-    def initialize(project_bundle, output_folder)
+    def initialize(project_bundle, options)
+      output_folder= options[:output_folder]
+      
       @project_bundle= File.expand_path(project_bundle)
       @name= File.basename(@project_bundle, ".*")
-      @namespace= @name
+      @namespace= options[:namespace] || @name
       @output_folder= File.expand_path(File.join(output_folder, @name))
       @nib_folder= "#{@name}.#{BUNDLE_EXTENSION}"
       @nib_output_folder= File.join(@output_folder, "src", @nib_folder)
@@ -87,7 +89,7 @@ module DashcodeConverter
       return @nib if @nib
       
       @nib= Nib::Nib.new(@name, controller)
-      @nib.add_view_from_path(@parts_spec_path)
+      @nib.add_view_from_path(@parts_spec_path, "#{@name}-view", true)
       @nib.add_datasources_from_path(@datasources_spec_path)
       @nib
     end
@@ -165,8 +167,8 @@ module DashcodeConverter
             <!DOCTYPE HTML>
             <html>
               <head>
-                <link rel="stylesheet" href="#{@name}.css" type="text/css" media="screen" charset="utf-8">
-                <script src="#{@name}.js" type="text/javascript" charset="utf-8"></script>
+                <link rel="stylesheet" href="#{@name}-debug.css" type="text/css" media="screen" charset="utf-8">
+                <script src="#{@name}-debug.js" type="text/javascript" charset="utf-8"></script>
               </head>
   
               <body>
@@ -174,10 +176,10 @@ module DashcodeConverter
               <script type="text/javascript" charset="utf-8">
                 distil.onready(function(){
     
-                  var controller= new #{@name}.#{@controller_name}({
+                  var controller= new #{namespace}.#{@controller_name}({
                                       nibName: '#{@name}'
                                     });
-                  controller.view();
+                  document.body.appendChild(controller.view().node);
       
                 });
   
@@ -197,8 +199,8 @@ module DashcodeConverter
         File.open("#{@name}.css", "w") { |css_file|
           css_file << css
         }
-        File.open("#{@name}.html", "w") { |html_file|
-          html_file << doc.css("body > *:first-child")[0].serialize
+        File.open("#{@name}-view.html", "w") { |html_file|
+          html_file << "<div>" << doc.css("body > *:first-child")[0].serialize << "</div>"
         }
       end
       

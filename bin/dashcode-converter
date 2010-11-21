@@ -43,8 +43,7 @@ module DashcodeConverter
   end
   
   project_files.each { |project_path|
-    project= Project.new(project_path, options[:output_folder])
-    project.namespace= options[:namespace]
+    project= Project.new(project_path, options)
     project.convert
   }
 

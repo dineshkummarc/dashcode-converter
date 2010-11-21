@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>out/dash2coherent.jsnib/dash2coherent.js</string>
+	<string>out/dash2coherent/dash2coherent.jsproj</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -35,49 +35,19 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>lib/dashcode-converter/controller.rb</key>
+		<key>bin/dashcode-converter</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>62</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>13</integer>
+				<integer>46</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>lib/dashcode-converter/nib.rb</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>15</integer>
-				<key>line</key>
-				<integer>65</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>57</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>10</integer>
-				<key>line</key>
-				<integer>65</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>15</integer>
-				<key>line</key>
-				<integer>65</integer>
-			</dict>
+			<integer>8</integer>
 		</dict>
 		<key>lib/dashcode-converter/nib/collection-view.rb</key>
 		<dict>
@@ -123,33 +93,19 @@
 				<integer>37</integer>
 			</dict>
 		</dict>
-		<key>lib/dashcode-converter/nib/view.rb</key>
+		<key>lib/dashcode-converter/project.rb</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>35</integer>
+				<integer>215</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>2</integer>
-		</dict>
-		<key>lib/dashcode-converter/project.rb</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>61</integer>
-				<key>line</key>
-				<integer>54</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>43</integer>
+			<integer>172</integer>
 		</dict>
 		<key>lib/dashcode-converter/scripts.rb</key>
 		<dict>
@@ -165,14 +121,14 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>out/dash2coherent.jsnib/Dash2coherentController.js</key>
+		<key>out/dash2coherent/dash2coherent.jsproj</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>9</integer>
 				<key>line</key>
-				<integer>15</integer>
+				<integer>7</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
@@ -185,55 +141,23 @@
 				<key>column</key>
 				<integer>0</integer>
 				<key>line</key>
-				<integer>14</integer>
+				<integer>0</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>27</integer>
 				<key>line</key>
-				<integer>15</integer>
+				<integer>17</integer>
 			</dict>
-		</dict>
-		<key>out/dash2coherent.jsnib/dash2coherent.css</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>9</integer>
-				<key>line</key>
-				<integer>384</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>196</integer>
-		</dict>
-		<key>out/dash2coherent.jsnib/dash2coherent.js</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>0</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>51</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
+		<string>bin/dashcode-converter</string>
 		<string>lib/dashcode-converter/scripts.rb</string>
 		<string>lib/dashcode-converter/project.rb</string>
-		<string>lib/dashcode-converter/controller.rb</string>
-		<string>out/dash2coherent.jsnib/dash2coherent.js</string>
-		<string>lib/dashcode-converter/nib/view.rb</string>
-		<string>lib/dashcode-converter/nib.rb</string>
-		<string>lib/dashcode-converter/nib/collection-view.rb</string>
-		<string>lib/dashcode-converter/nib/nib-item.rb</string>
+		<string>out/dash2coherent/dash2coherent.jsproj</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>

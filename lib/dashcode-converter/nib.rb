@@ -1,11 +1,14 @@
 module DashcodeConverter
   
   module Nib
-
+    
+    MAIN_VIEW_NAME= "main-view"
+    
     CLASSNAME_LOOKUP= {
       "Text" => "View",
       "PushButton" => "Button",
-      "List" => "CollectionView"
+      "List" => "CollectionView",
+      "ImageLayout" => "Image"
     }
 
     class Nib
@@ -29,20 +32,26 @@ module DashcodeConverter
         @owner_references= {}
         @items= {}
         @views= []
-        add_owner_reference('view', name)
       end
       
       def add_view(view)
         items[view.name]= view
         views << view
+        if (!view.is_template)
+          if view.is_primary
+            add_owner_reference('view', view.name)
+          else
+            add_owner_reference(view.name, view.name)
+          end
+        end
       end
       
       def add_item(item)
         items[item.name]= item
       end
       
-      def add_view_from_path(path, name=@name)
-        view= View.new(name, self)
+      def add_view_from_path(path, name, primary)
+        view= View.new(name, self, primary)
         view.parse_spec(parse_parts(path))
         add_view(view)
       end

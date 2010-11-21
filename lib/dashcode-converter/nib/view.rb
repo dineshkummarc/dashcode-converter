@@ -10,13 +10,14 @@ module DashcodeConverter
       EOF
       
       attr_reader :name, :nib, :items, :items_by_id
-      attr_accessor :is_template
+      attr_accessor :is_template, :is_primary
       
-      def initialize(name, nib)
+      def initialize(name, nib, primary=false)
         @name= name
         @nib= nib
         @items= []
         @items_by_id= {}
+        @is_primary= primary
       end
 
       def remove_item(item)
